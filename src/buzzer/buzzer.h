@@ -1,12 +1,12 @@
 /**
  * @file buzzer.h
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-12-29
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 
 #ifndef BUZZER_H_
@@ -14,6 +14,7 @@
 
 /* Include */
 #include <stdbool.h>
+
 #include "stm32f1xx_hal.h"
 
 /* Defines */
@@ -23,14 +24,13 @@
 #define TIME_BEEP_DOWN_MS 30000
 
 /* Structs */
-typedef struct 
-{
-    bool alarm;
-    uint32_t interval_beeps;
+typedef struct {
+  bool alarm;
+  uint32_t interval_beeps;
 } st_buzzer;
 
 /* Prototypes */
-void manage_buzzer(st_buzzer *buzzer_st);
+void run_buzzer(st_buzzer *buzzer_st);
 void buzzer_turnOn(st_buzzer *buzzer_st);
 void buzzer_turnOff(st_buzzer *buzzer_st);
 

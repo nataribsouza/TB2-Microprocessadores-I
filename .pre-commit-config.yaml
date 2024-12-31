@@ -1,0 +1,29 @@
+files: ^(src/*)  # Filtra apenas arquivos dentro da pasta 'src' e suas subpastas
+
+exclude: ^(\.pio/|lib/)  # Ignora tudo dentro das pastas '.pio' e 'lib'
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0 
+    hooks:
+    -   id: check-case-conflict
+    -   id: check-json
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/felipengeletrica/pre-commit-hooks-cpp
+    rev: master
+    hooks:
+    -   id: clang-format
+    -   id: cpplint
+        args:
+          [
+            "--extensions=c,cpp,h,hpp",
+            "--headers=h",
+            --recursive,
+            "--filter=-readability/casting,-runtime/int,-build/include_subdir,-legal/copyright,-runtime/arrays",
+          ]
+        
+    -   id: cppcheck
+        args: [".", --language=c++, "-i.pio/", "-ilib/", "--suppress=ctuOneDefinitionRuleViolation"]

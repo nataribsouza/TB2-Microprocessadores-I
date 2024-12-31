@@ -33,8 +33,8 @@ int main(void) {
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
   // Init ADC's
-  HAL_ADC_Start(&hadc1); 
-  HAL_ADC_Start(&hadc2); 
+  HAL_ADC_Start(&hadc1);
+  HAL_ADC_Start(&hadc2);
 
   // Init LCD display
   init_display();
@@ -54,10 +54,9 @@ int main(void) {
 }
 
 /* Functions */
-
 /**
  * @brief System clock config
- * 
+ *
  */
 void SystemClock_Config(void) {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -75,8 +74,8 @@ void SystemClock_Config(void) {
     Error_Handler();
   }
 
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
+                                RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -93,10 +92,10 @@ void SystemClock_Config(void) {
 }
 
 /**
-  * @brief ADC1 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief ADC1 Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_ADC1_Init(void) {
   ADC_ChannelConfTypeDef sConfig = {0};
 
@@ -120,10 +119,10 @@ static void MX_ADC1_Init(void) {
 }
 
 /**
-  * @brief ADC2 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief ADC2 Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_ADC2_Init(void) {
   ADC_ChannelConfTypeDef sConfig = {0};
 
@@ -148,7 +147,7 @@ static void MX_ADC2_Init(void) {
 
 /**
  * @brief I2C config
- * 
+ *
  */
 static void MX_I2C2_Init(void) {
   hi2c2.Instance = I2C2;
@@ -167,7 +166,7 @@ static void MX_I2C2_Init(void) {
 
 /**
  * @brief GPIO's config
- * 
+ *
  */
 static void MX_GPIO_Init(void) {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -178,13 +177,13 @@ static void MX_GPIO_Init(void) {
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   // Configure GPIO pin Output Level
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14 | GPIO_PIN_15, GPIO_PIN_RESET);
 
   // Configure GPIO pin Output Level
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
 
   // Configure GPIO pins : PC14 PC15
-  GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
+  GPIO_InitStruct.Pin = GPIO_PIN_14 | GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -198,16 +197,15 @@ static void MX_GPIO_Init(void) {
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   // Configure GPIO pins : PB12 PB13 PB14 PB15
-  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+  GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
 }
 
 /**
  * @brief TIM3 config for PWM generation
- * 
+ *
  */
 static void MX_TIM3_Init(void) {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
@@ -247,6 +245,10 @@ static void MX_TIM3_Init(void) {
   HAL_TIM_MspPostInit(&htim3);
 }
 
+/**
+ * @brief Config error handler
+ *
+ */
 void Error_Handler(void) {
   __disable_irq();
   while (1) {

@@ -5,7 +5,6 @@
 #include "stm32f1xx_hal.h"
 #include "device.h"
 #include "display/display.h"
-#include "buzzer/buzzer.h"
 
 /* Prototypes */
 void Error_Handler(void);
