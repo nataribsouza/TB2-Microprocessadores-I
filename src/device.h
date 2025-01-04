@@ -13,9 +13,15 @@
 #define DEVICE_H_
 
 /* Includes */
+#include <string.h>
 #include "buzzer/buzzer.h"
 #include "display/display.h"
 #include "temperature/temperature.h"
+
+
+/* Defines */
+#define C_TIME_INJECTION_MS 500
+#define C_TIME_IDLE_MS 1000
 
 /* Enums */
 typedef enum {
@@ -33,13 +39,16 @@ typedef struct {
   en_state state_en;
   st_buzzer buzzer_st;
   st_display display_st;
+  st_temperature temperature_st;
   uint8_t instant_speed;
   uint8_t average_speed;
   uint8_t fuel_range;
 } st_device;
 
 /* Prototypes */
-
+void init_device(st_device *device_st);
 void state_machine(st_device *device_st);
+void manage_system(st_device *device_st);
+void manage_injection(st_device *device_st);
 
 #endif /* DEVICE_H_ */

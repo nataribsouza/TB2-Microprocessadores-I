@@ -42,6 +42,7 @@
 #define LAST_POS_2CHAR_STR 1
 #define ASCII_NUM_0
 #define ASCII_NUM_9
+#define TIME_UPDATE_DISPLAY_MS 1000
 
 /* Screens display */
 // Start 
@@ -72,6 +73,7 @@ typedef struct {
 
 /* Prototypes */
 void init_display(void);
+void display_update(st_display *display_st);
 void display_nibble(uint8_t, uint8_t control);
 void display_nibble_data(uint8_t nibble);
 void display_nibble_command(uint8_t nibble);

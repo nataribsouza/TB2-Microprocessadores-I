@@ -7,6 +7,7 @@
 #include "display/display.h"
 
 /* Prototypes */
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 #endif /* MAIN_H_ */

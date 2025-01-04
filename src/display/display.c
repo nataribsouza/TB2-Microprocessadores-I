@@ -131,3 +131,23 @@ void display_set_line(st_display *display_st,  uint8_t row, const char *str) {
 
     display_st->update = true;    
 }
+
+void display_update(st_display *display_st) {
+    unsigned long time = HAL_GetTick();
+    static unsigned long timer = 0;
+
+    // Update display at 1 FPS rate
+    if(time - timer >= TIME_UPDATE_DISPLAY_MS) {
+        timer = time;
+
+        if(display_st->update) {
+            display_st->update = false;
+
+            display_clear();
+            display_setCursor(0, 0);
+            display_print(display_st->row0);
+            display_setCursor(1, 0);
+            display_print(display_st->row1);
+        }
+    }    
+}
