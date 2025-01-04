@@ -4,11 +4,24 @@
 /* Functions */
 
 /**
+ * @brief Init device struct
+ * 
+ * @param device_st 
+ */
+void init_device(st_device *device_st) {
+  device_st->state_en = ENUM_STATE_READ_BUTTONS;
+}
+
+/**
  * @brief Manage device functioning
  *
  * @param device_st
  */
 void state_machine(st_device *device_st) {
+  st_buzzer *buzzer_st = &(device_st->buzzer_st);
+  st_display *display_st = &(device_st->display_st);
+  st_temperature *temperature_st = &(device_st->temperature_st);
+
   switch (device_st->state_en) {
     case ENUM_STATE_READ_BUTTONS:
       // run_buttons();
@@ -16,8 +29,9 @@ void state_machine(st_device *device_st) {
       break;
 
     case ENUM_STATE_READ_TEMPERATURE:
-      read_temperature(&(device_st->temperature_st));
+      read_temperature(temperature_st);
       device_st->state_en = ENUM_STATE_READ_POTENTIOMETER;
+      break;
 
     case ENUM_STATE_READ_POTENTIOMETER:
       // run_tank();
@@ -25,8 +39,9 @@ void state_machine(st_device *device_st) {
       break;
 
     case ENUM_STATE_MANAGE_SYSTEMS:
-      // device_speed();
+      manage_system(device_st);
       device_st->state_en = ENUM_STATE_MANAGE_LEDS;
+      break;
 
     case ENUM_STATE_MANAGE_LEDS:
       // run_leds();
@@ -39,7 +54,7 @@ void state_machine(st_device *device_st) {
       break;
 
     case ENUM_STATE_UPDATE_DISPLAY:
-      display_update(&(device_st->display_st));
+      display_update(display_st);
       device_st->state_en = ENUM_STATE_READ_BUTTONS;
       break;
 
@@ -49,19 +64,16 @@ void state_machine(st_device *device_st) {
   }
 }
 
-void init_device(st_device *device_st) {
-  device_st->state_en = ENUM_STATE_READ_BUTTONS;
-}
-
-void manage_systens(st_device *device_st) {
+void manage_system(st_device *device_st) {
   manage_injection(device_st);
+
+  float temperature = device_st->temperature_st.temperature;
+
+  sprintf(device_st->display_st.row1, "Temp: %d", (int)temperature);
+  device_st->display_st.update = true;
 }
 
 void manage_injection(st_device *device_st) {
-  char buffer[256] = {0};
-
-  sprintf(device_st->display_st.row1, "Temperature: %.2f\n", device_st->temperature_st.temperature);
-  device_st->display_st.update = true;
   // uint32_t timer = HAL_GetTick();
   // static uint32_t elased_time_injection = C_TIME_INJECTION_MS;
   // static uint32_t elased_time_idle = C_TIME_IDLE_MS;

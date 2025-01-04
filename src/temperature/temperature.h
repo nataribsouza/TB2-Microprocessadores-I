@@ -13,8 +13,8 @@
 #define TEMPERATURE_H_
 
 /* Includes */
+#include <string.h>
 #include <stdbool.h>
-
 #include "stm32f1xx_hal.h"
 
 /* Defines */
@@ -22,7 +22,7 @@
 #define C_REFERENCE_VOLTAGE_V 3.3F
 #define C_ADC_RESOLUTION_BITS 4096.0F
 #define C_VOLTAGE_25_DEGREE_C 1.43F
-#define C_VOLTAGE_PER_DEGREE 0.0043F
+#define C_VOLTAGE_PER_DEGREE (1000 / 43)
 #define C_BASE_TEMPERATURE_DEGREE 25.0F
 #define C_CRITICAL_TEMPERATURE_C 50.0F
 #define C_COUNTS_ALERT_OVERHEAT 5

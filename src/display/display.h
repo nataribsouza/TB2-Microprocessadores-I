@@ -42,7 +42,7 @@
 #define LAST_POS_2CHAR_STR 1
 #define ASCII_NUM_0
 #define ASCII_NUM_9
-#define TIME_UPDATE_DISPLAY_MS 1000
+#define TIME_UPDATE_DISPLAY_MS 500
 
 /* Screens display */
 // Start 

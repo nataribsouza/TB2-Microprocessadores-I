@@ -30,10 +30,6 @@ int main(void) {
   // Init PWM
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
-  // Init ADC's
-  HAL_ADC_Start(&hadc1);
-  HAL_ADC_Start(&hadc2);
-
   // Init LCD display
   init_display();
 
@@ -47,7 +43,7 @@ int main(void) {
 
   // Main infinit loop
   while (1) {
-    // state_machine(&device_st);
+    state_machine(&device_st);
     HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_15);
     HAL_Delay(200);
   }
@@ -113,7 +109,7 @@ static void MX_ADC1_Init(void) {
   /* Configure Regular Channel */
   sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK) {
     Error_Handler();
   }

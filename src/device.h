@@ -13,6 +13,7 @@
 #define DEVICE_H_
 
 /* Includes */
+#include <stdio.h>
 #include <string.h>
 #include "buzzer/buzzer.h"
 #include "display/display.h"
