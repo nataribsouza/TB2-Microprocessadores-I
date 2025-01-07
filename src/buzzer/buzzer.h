@@ -25,7 +25,8 @@
 /* Structs */
 typedef struct {
   bool alarm;
-  uint32_t interval_beeps;
+  uint32_t elapsed_time_up;
+  uint32_t elapsed_time_down;
 } st_buzzer;
 
 /* Prototypes */

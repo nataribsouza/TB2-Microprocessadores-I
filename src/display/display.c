@@ -19,6 +19,9 @@ void init_display(void) {
     display_clear();
     HAL_Delay(2);
     display_send_command(LCD_CMD_SET_CURSOR_INCREMENT);
+
+    // Creat custom characteres
+    display_create_custom_chars();
 }
 
 /**
@@ -132,22 +135,71 @@ void display_set_line(st_display *display_st,  uint8_t row, const char *str) {
     display_st->update = true;    
 }
 
-void display_update(st_display *display_st) {
-    uint32_t timer = HAL_GetTick();
-    static uint32_t elased_time = TIME_UPDATE_DISPLAY_MS;
+/**
+ * @brief Create custom characters in the LCD CGRAM
+ */
+void display_create_custom_chars(void) {
+    uint8_t char1[8] = {
+        0b11111,
+        0b11111,
+        0b10001,
+        0b10111,
+        0b10111,
+        0b10001,
+        0b11111,
+        0b11111
+    };
+    
+    uint8_t char2[8] = {
+        0b11111,
+        0b11111,
+        0b10001,
+        0b11011,
+        0b11011,
+        0b11011,
+        0b11111,
+        0b11111
+    };
+    
+    // Set CGRAM address for first custom character
+    display_send_command(LCD_CMD_CREAT_ESP_CHAR);
+    for (int i = 0; i < 8; i++) {
+        display_send_data(char1[i]);
+    }
+    
+    // Set CGRAM address for second custom character
+    display_send_command(LCD_CMD_CREAT_ESP_CHAR + 8);
+    for (int i = 0; i < 8; i++) {
+        display_send_data(char2[i]);
+    }
+}
 
-    // Update display at 2 FPS rate
-    if(timer >= elased_time) {
-        elased_time = timer + TIME_UPDATE_DISPLAY_MS;
+/**
+ * @brief Print temperature alert character
+ * 
+ * @param state 
+ */
+void display_temp_alert(bool state) {
+    display_setCursor(1, 14);
 
-        if(display_st->update) {
-            display_st->update = false;
+    if(state) {
+        display_send_data(LCD_CUSTOM_CHAR_TEMPERATURE_INDEX);
+    } else {
+        display_send_data(' ');
+    }
+}
 
-            display_clear();
-            display_setCursor(0, 0);
-            display_print(display_st->row0);
-            display_setCursor(1, 0);
-            display_print(display_st->row1);
-        }
-    }    
+/**
+ * @brief Print gasoline alert character
+ * 
+ * @param state 
+ */
+void display_gasoline_alert(bool state) {
+    display_setCursor(1, 15);
+
+    if(state) {
+        display_send_data(LCD_CUSTOM_CHAR_GASOLINE_INDEX);
+    } else {
+        display_send_data(' ');
+    }
 }

@@ -1,148 +1,106 @@
-// /* Includes */
-// #include "keyboard.h"
+/* Includes */
+#include "keyboard.h"
 
-// /* Variables */
-// st_button keyboard[KEYBOARD_NUM_BUTTONS];
+/* Variables */
+st_button keyboard[KEYBOARD_NUM_BUTTONS];
 
-// /* Functions */
-// /**
-//  * @brief Initialize keyboard pins
-//  * 
-//  */
-// void init_keyboard(void) {
-//     // Set pins to keyboard buttons
-//     keyboard[ENUM_BUTTON_0].pin = KEYBOARD_PIN_COLLUM_1;
-//     keyboard[ENUM_BUTTON_1].pin = KEYBOARD_PIN_COLLUM_0;
-//     keyboard[ENUM_BUTTON_2].pin = KEYBOARD_PIN_COLLUM_1;
-//     keyboard[ENUM_BUTTON_3].pin = KEYBOARD_PIN_COLLUM_2;
-//     keyboard[ENUM_BUTTON_4].pin = KEYBOARD_PIN_COLLUM_0;
-//     keyboard[ENUM_BUTTON_5].pin = KEYBOARD_PIN_COLLUM_1;
-//     keyboard[ENUM_BUTTON_6].pin = KEYBOARD_PIN_COLLUM_2;
-//     keyboard[ENUM_BUTTON_7].pin = KEYBOARD_PIN_COLLUM_0;
-//     keyboard[ENUM_BUTTON_8].pin = KEYBOARD_PIN_COLLUM_1;
-//     keyboard[ENUM_BUTTON_9].pin = KEYBOARD_PIN_COLLUM_2;
-//     keyboard[ENUM_BUTTON_STAR].pin = KEYBOARD_PIN_COLLUM_0;
-//     keyboard[ENUM_BUTTON_HASHTAG].pin = KEYBOARD_PIN_COLLUM_2;
+/* Functions */
 
-//     // Set buttons port
-//     keyboard[ENUM_BUTTON_0].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_1].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_2].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_3].port = ENUM_PORT_PORTB;
-//     keyboard[ENUM_BUTTON_4].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_5].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_6].port = ENUM_PORT_PORTB;
-//     keyboard[ENUM_BUTTON_7].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_8].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_9].port = ENUM_PORT_PORTB;
-//     keyboard[ENUM_BUTTON_STAR].port = ENUM_PORT_PORTD;
-//     keyboard[ENUM_BUTTON_HASHTAG].port = ENUM_PORT_PORTB;
-    
-//     // Init input pins
-//     init_pin(KEYBOARD_PIN_COLLUM_0, ENUM_PORT_PORTD, ENUM_PINMODE_INPUTPULLUP);
-//     init_pin(KEYBOARD_PIN_COLLUM_1, ENUM_PORT_PORTD, ENUM_PINMODE_INPUTPULLUP);
-//     init_pin(KEYBOARD_PIN_COLLUM_2, ENUM_PORT_PORTB, ENUM_PINMODE_INPUTPULLUP);
+/**
+ * @brief init buttons structure
+ * 
+ * @param keyboard 
+ */
+void init_keyboard(void) {
+    // Configure button break
+    keyboard[ENUM_BUTTON_BREAK].executed = false;
+    keyboard[ENUM_BUTTON_BREAK].pressed = false;
+    keyboard[ENUM_BUTTON_BREAK].state = false;
+    keyboard[ENUM_BUTTON_BREAK].old_state = false;
+    keyboard[ENUM_BUTTON_BREAK].timer = 0;
+    keyboard[ENUM_BUTTON_BREAK].pin = PIN_BUTTON_BREAK;
 
-//     // Init output pins
-//     init_pin(KEYBOARD_PIN_ROW_0, ENUM_PORT_PORTD, ENUM_PINMODE_OUTPUT);
-//     init_pin(KEYBOARD_PIN_ROW_1, ENUM_PORT_PORTD, ENUM_PINMODE_OUTPUT);
-//     init_pin(KEYBOARD_PIN_ROW_2, ENUM_PORT_PORTD, ENUM_PINMODE_OUTPUT);
-//     init_pin(KEYBOARD_PIN_ROW_3, ENUM_PORT_PORTD, ENUM_PINMODE_OUTPUT);
+    // Configure button gas
+    keyboard[ENUM_BUTTON_GAS].executed = false;
+    keyboard[ENUM_BUTTON_GAS].pressed = false;
+    keyboard[ENUM_BUTTON_GAS].state = false;
+    keyboard[ENUM_BUTTON_GAS].old_state = false;
+    keyboard[ENUM_BUTTON_GAS].timer = 0;
+    keyboard[ENUM_BUTTON_GAS].pin = PIN_BUTTON_GAS;
 
-//     // Set output pins as low
-//     set_pin(KEYBOARD_PIN_ROW_0, ENUM_PORT_PORTD, true);
-//     set_pin(KEYBOARD_PIN_ROW_1, ENUM_PORT_PORTD, true);
-//     set_pin(KEYBOARD_PIN_ROW_2, ENUM_PORT_PORTD, true);
-//     set_pin(KEYBOARD_PIN_ROW_3, ENUM_PORT_PORTD, true);
-// }
+    // Configure button previous
+    keyboard[ENUM_BUTTON_PREVIOUS].executed = false;
+    keyboard[ENUM_BUTTON_PREVIOUS].pressed = false;
+    keyboard[ENUM_BUTTON_PREVIOUS].state = false;
+    keyboard[ENUM_BUTTON_PREVIOUS].old_state = false;
+    keyboard[ENUM_BUTTON_PREVIOUS].timer = 0;
+    keyboard[ENUM_BUTTON_PREVIOUS].pin = PIN_BUTTON_PREVIOUS;
 
-// /**
-//  * @brief Handle keyboard, reading 
-//  * all buttons with pooling
-//  * 
-//  */
-// void run_keyboard(void) {
-//     for(int i = 0; i < KEYBOARD_NUM_BUTTONS; i++) {
-//         st_button *button = &keyboard[i];
+    // Configure button next
+    keyboard[ENUM_BUTTON_NEXT].executed = false;
+    keyboard[ENUM_BUTTON_NEXT].pressed = false;
+    keyboard[ENUM_BUTTON_NEXT].state = false;
+    keyboard[ENUM_BUTTON_NEXT].old_state = false;
+    keyboard[ENUM_BUTTON_NEXT].timer = 0;
+    keyboard[ENUM_BUTTON_NEXT].pin = PIN_BUTTON_NEXT;
+}
 
-//         // Select rows
-//         switch(i) {
-//             case ENUM_BUTTON_1:
-//             case ENUM_BUTTON_2:
-//             case ENUM_BUTTON_3:
-//                 set_pin(KEYBOARD_PIN_ROW_0, ENUM_PORT_PORTD, false);
-//                 set_pin(KEYBOARD_PIN_ROW_1, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_2, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_3, ENUM_PORT_PORTD, true);
-//                 break;
+/**
+ * @brief Handle keyboard, reading 
+ * all buttons with pooling
+ * 
+ */
+void run_keyboard(void) {
+    for(int i = 0; i < KEYBOARD_NUM_BUTTONS; i++) {
+        st_button *button = &keyboard[i];
+        uint32_t timer = HAL_GetTick();
 
-//             case ENUM_BUTTON_4:
-//             case ENUM_BUTTON_5:
-//             case ENUM_BUTTON_6:
-//                 set_pin(KEYBOARD_PIN_ROW_0, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_1, ENUM_PORT_PORTD, false);
-//                 set_pin(KEYBOARD_PIN_ROW_2, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_3, ENUM_PORT_PORTD, true);
-//                 break;
+        button->old_state = button->state;
+        button->state = HAL_GPIO_ReadPin(GPIOB, button->pin);
 
-//             case ENUM_BUTTON_7:
-//             case ENUM_BUTTON_8:
-//             case ENUM_BUTTON_9:
-//                 set_pin(KEYBOARD_PIN_ROW_0, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_1, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_2, ENUM_PORT_PORTD, false);
-//                 set_pin(KEYBOARD_PIN_ROW_3, ENUM_PORT_PORTD, true);
-//                 break;
+        // If button unpressed
+        if(button->state == true) {
+            button->pressed = false;
+            button->executed = false;
+        }
 
-//             case ENUM_BUTTON_STAR:
-//             case ENUM_BUTTON_0:
-//             case ENUM_BUTTON_HASHTAG:
-//                 set_pin(KEYBOARD_PIN_ROW_0, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_1, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_2, ENUM_PORT_PORTD, true);
-//                 set_pin(KEYBOARD_PIN_ROW_3, ENUM_PORT_PORTD, false);
-//                 break;
-//         }
+        // Set timestamp when pressed
+        if(button->state == false && button->old_state == true) {
+            button->timer = timer + KEYBOARD_PRESSING_TIME_MS;
+        }
 
-//         button->old_value = button->value;
-//         button->value = read_pin(button->pin, button->port);
+        // If button was continues pressed for a determinated time
+        if(button->state == false && timer > button->timer) {
+            button->pressed = true;
+        }
+    }
+}
 
-//         // If button unpressed
-//         if(button->value == true) {
-//             button->pressed = false;
-//             button->executed = false;
-//         }
+/**
+ * @brief Return true one single
+ * time if the button was pressed
+ * 
+ * @param button 
+ * @return true 
+ * @return false 
+ */
+bool read_keyboard(uint8_t button) {
+    bool pressed = keyboard[button].pressed;
+    bool executed = keyboard[button].executed;
 
-//         // Set timestamp when pressed
-//         if(button->value == false && button->old_value == true) {
-//             button->timer = millis();
-//         }
+    // Buttons gas and break return the actual state every time 
+    // that the function is called
+    if(button == ENUM_BUTTON_BREAK || button == ENUM_BUTTON_GAS) {
+        return pressed;
 
-//         // If button was continues pressed for a determinated time
-//         if(millis()-button->timer >= KEYBOARD_PRESSING_TIME_MS && button->value == false) {
-//             button->pressed = true;
-//         }
-//     }
-// }
-
-// /**
-//  * @brief Return true one single
-//  * time if the button was pressed
-//  * 
-//  * @param button 
-//  * @return true 
-//  * @return false 
-//  */
-// bool read_keyboard(uint8_t button) {
-//     bool pressed = keyboard[button].pressed;
-//     bool executed = keyboard[button].executed;
-
-//     /* Check if button was pressed and 
-//     command was not executed yet */
-//     if(executed || !pressed) {
-//         return false;
-//     } else {
-//         keyboard[button].executed = true;
-//         return true;
-//     }
-// }
+    // Buttons previous and next return pressed state only once
+    // when called
+    } else {
+        if(executed || !pressed) {
+            return false;
+        } else {
+            keyboard[button].executed = true;
+            return true;
+        }
+    }
+}

@@ -19,10 +19,11 @@
 #include "stm32f1xx_hal.h"
 
 /* Defines */
+#define PI 3.14159265359
 #define TIME_READ_TANK_MS 50
 #define C_REFERENCE_VOLTAGE_V 3.3F
 #define C_ADC_RESOLUTION_BITS 4096.0F
-#define C_VOLT_TO_DEGREE (360 / C_REFERENCE_VOLTAGE_V)
+#define C_VOLT_TO_DEGREE (300.0F / C_REFERENCE_VOLTAGE_V)
 #define MIM_VALID_ANGLE_DEGREE 98.66F
 #define MAX_VALID_ANGLE_DEGREE 201.34F
 #define ANGLE_MIDDLE_SCALE_DEGREES 150.0F
@@ -33,7 +34,7 @@
 /* Structs */
 typedef struct {
   bool critical;
-  float volume;
+  uint16_t volume;
 } st_tank;
 
 /* Prototypes */
